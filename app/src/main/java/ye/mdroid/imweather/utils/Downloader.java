@@ -19,7 +19,6 @@ public class Downloader {
 
     /**
      * 打印源码
-     *
      * @param urls
      * @throws IOException
      */
@@ -47,7 +46,6 @@ public class Downloader {
      * @throws IOException
      */
     public static void download(String title, String urls, String filePath) throws IOException {
-        Log.i(tag, filePath.substring(filePath.lastIndexOf("/") + 1) + " 开始下载!");
         URL url = new URL(urls);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET"); //请求方式 get
@@ -58,7 +56,6 @@ public class Downloader {
         if (res == 200) {
             InputStream in = connection.getInputStream();
             codes = StreamUtils.stream2String(in);
-            System.out.println(title + ">>>>>>" + codes);
             StreamUtils.stream2File(codes, filePath);
         }
         synchronized (MainActivity.class) {

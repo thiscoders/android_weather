@@ -25,7 +25,7 @@
 
 2.创建城市列表的sql语句
 ``` sql
-    create table china_cities(
+    create table china_cities(``
         cityId varchar(30) primary key,   --城市/地区编码
         cityEn varchar(30),  --英文
         cityZh varchar(30),  --中文

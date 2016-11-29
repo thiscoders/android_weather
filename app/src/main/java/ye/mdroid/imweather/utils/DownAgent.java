@@ -1,7 +1,6 @@
 package ye.mdroid.imweather.utils;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.io.IOException;
 
@@ -10,15 +9,18 @@ import java.io.IOException;
  */
 
 public class DownAgent {
-    private String tag = DownAgent.class.getSimpleName();
+    private String TAG = DownAgent.class.getSimpleName();
     private String urls = "https://free-api.heweather.com/v5/";
     private String keys = "c832c5f36ea8477bbdcf79d41371065c";
 
     private Context context;
 
+    private String downPath;
+
 
     public DownAgent(Context context) {
         this.context = context;
+        downPath = this.context.getExternalFilesDir("down") + "";
     }
 
     //下载7-10天预报
@@ -28,9 +30,7 @@ public class DownAgent {
         urls += "city=huxian";
         urls += "&key=" + keys;
         urls += "&lang=zh_cn";
-//        System.out.println(urls);
-        //Downloader.printf(urls);
-        Downloader.download("7-10", urls, this.context.getExternalFilesDir("down") + "/forecast_huxian.json");
+        Downloader.download("7-10", urls, downPath + "/forecast_huxian.json");
     }
 
 
@@ -41,9 +41,7 @@ public class DownAgent {
         urls += "city=huxian";
         urls += "&key=" + keys;
         urls += "&lang=zh_cn";
-//        System.out.println(urls);
-        //Downloader.printf(urls);
-        Downloader.download("实况天气", urls, this.context.getExternalFilesDir("down") + "/now_huxian.json");
+        Downloader.download("实况天气", urls, downPath + "/now_huxian.json");
     }
 
     //3.下载每小时预报 /hourly     city key lang
@@ -53,9 +51,7 @@ public class DownAgent {
         urls += "city=huxian";
         urls += "&key=" + keys;
         urls += "&lang=zh_cn";
-//        System.out.println(urls);
-        //Downloader.printf(urls);
-        Downloader.download("每小时预报", urls, this.context.getExternalFilesDir("down") + "/hourly_huxian.json");
+        Downloader.download("每小时预报", urls, downPath + "/hourly_huxian.json");
     }
 
     //4.下载生活指数 /suggestion      city key
@@ -64,9 +60,7 @@ public class DownAgent {
         urls += "suggestion?";
         urls += "city=huxian";
         urls += "&key=" + keys;
-//        System.out.println(urls);
-        //Downloader.printf(urls);
-        Downloader.download("生活指数", urls, this.context.getExternalFilesDir("down") + "/suggestion_huxian.json");
+        Downloader.download("生活指数", urls, downPath + "/suggestion_huxian.json");
     }
 
     //5.下载灾害预警 /alarm      city key
@@ -75,9 +69,7 @@ public class DownAgent {
         urls += "alarm?";
         urls += "city=huxian";
         urls += "&key=" + keys;
-//        System.out.println(urls);
-        //Downloader.printf(urls);
-        Downloader.download("灾害预警", urls, this.context.getExternalFilesDir("down") + "/alarm_huxian.json");
+        Downloader.download("灾害预警", urls, downPath + "/alarm_huxian.json");
     }
 
     //6.下载天气预报集合接口 /weather     city key lang
@@ -87,9 +79,7 @@ public class DownAgent {
         urls += "city=huxian";
         urls += "&key=" + keys;
         urls += "&lang=zh_cn";
-//        System.out.println(urls);
-        //Downloader.printf(urls);
-        Downloader.download("集合接口", urls, this.context.getExternalFilesDir("down") + "/weather_huxian.json");
+        Downloader.download("集合接口", urls, downPath + "/weather_huxian.json");
     }
 
     //7.下载景点天气 /scenic      city key lang
@@ -99,9 +89,7 @@ public class DownAgent {
         urls += "city=CN101110106"; //仅支持id
         urls += "&key=" + keys;
         urls += "&lang=zh_cn";
-//        System.out.println(urls);
-        //Downloader.printf(urls);
-        Downloader.download("景点天气", urls, this.context.getExternalFilesDir("down") + "/scenic_huxian.json");
+        Downloader.download("景点天气", urls, downPath + "/scenic_huxian.json");
     }
 
     //8.下载历史天气 /historical        city date   key   lang
@@ -112,9 +100,7 @@ public class DownAgent {
         urls += "&date=2016-10-28";
         urls += "&key=" + keys;
         urls += "&lang=zh_cn";
-//        System.out.println(urls);
-        //Downloader.printf(urls);
-        Downloader.download("历史天气16-10-28", urls, this.context.getExternalFilesDir("down") + "/historical_huxian.json");
+        Downloader.download("历史天气16-10-28", urls, downPath + "/historical_huxian.json");
     }
 
     //9.下载城市查询 /search      city key
@@ -123,27 +109,39 @@ public class DownAgent {
         urls += "search?";
         urls += "city=huxian";
         urls += "&key=" + keys;
-//        System.out.println(urls);
-        //Downloader.printf(urls);
-        Downloader.download("城市查询", urls, this.context.getExternalFilesDir("down") + "/search_huxian.json");
+        Downloader.download("城市查询", urls, downPath + "/search_huxian.json");
     }
 
 
-    public void exec() {
-        try {
-            Log.i(tag, "下载开始...");
-            test01();
-            test02();
-            test03();
-            test04();
-            test05();
-            test06();
-            test07();
-            test08();
-            test09();
-        } catch (IOException e) {
-            Log.i(tag, "agent ex >>>" + e.toString());
-            return;
+    public void exec(int i) throws IOException {
+        switch (i) {
+            case 1:
+                test01();
+                break;
+            case 2:
+                test02();
+                break;
+            case 3:
+                test03();
+                break;
+            case 4:
+                test04();
+                break;
+            case 5:
+                test05();
+                break;
+            case 6:
+                test06();
+                break;
+            case 7:
+                test07();
+                break;
+            case 8:
+                test08();
+                break;
+            case 9:
+                test09();
+                break;
         }
     }
 }

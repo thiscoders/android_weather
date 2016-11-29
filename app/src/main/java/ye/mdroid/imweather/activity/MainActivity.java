@@ -10,15 +10,22 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
+
 import ye.mdroid.imweather.R;
+import ye.mdroid.imweather.cvs.ChartView2;
 import ye.mdroid.imweather.utils.DownAgent;
+import ye.mdroid.imweather.utils.StreamUtils;
 
 public class MainActivity extends AppCompatActivity {
     private final int MENU_UPDATE = 1;
-    private final int MENU_CHOOSEC = 2;
-    private final int MENU_ABOUT = 3;
+    private final int MENU_ABOUT = 2;
 
     private ProgressBar pb_ing;
+    private ChartView2 cv2_forecast;
+
+    private AsyncDowner downer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         pb_ing = (ProgressBar) findViewById(R.id.pb_ing);
+
+        downer = new AsyncDowner();
     }
 
     @Override
@@ -41,7 +50,10 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case MENU_UPDATE:
                 // TODO: 16-11-28  刷新数据以后可以通过下拉刷新实现
-                new dmAnegt().execute();
+                if (downer != null && downer.getStatus() == AsyncTask.Status.RUNNING) {
+                    downer.cancel(true);
+                }
+                new AsyncDowner().execute();
                 break;
             case MENU_ABOUT:
                 intent = new Intent(MainActivity.this, AboutActivity.class);
@@ -52,13 +64,8 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void click1(View view) {
-        Toast.makeText(MainActivity.this, "lalal", Toast.LENGTH_SHORT).show();
-    }
-
-
-    private class dmAnegt extends AsyncTask<Void, Void, Void> {
-
+    private class AsyncDowner extends AsyncTask<Void, Void, Void> {
+        private boolean isok = false;
         private DownAgent agent;
 
         @Override
@@ -70,7 +77,23 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... voids) {
             agent = new DownAgent(MainActivity.this);
-            agent.exec();
+            try {
+                for (int i = 1; i < 10; i++) {
+                    if (isCancelled()) {
+                        break;
+                    }
+                    agent.exec(i);
+                }
+            } catch (IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "请检查网络!!!", Toast.LENGTH_SHORT).show();
+                    }
+                });
+                return null;
+            }
+            isok = true;
             return null;
         }
 
@@ -78,6 +101,8 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             pb_ing.setVisibility(View.GONE);
+            if (isok)
+                Toast.makeText(MainActivity.this, "所有资源下载完成！", Toast.LENGTH_SHORT).show();
         }
     }
 }

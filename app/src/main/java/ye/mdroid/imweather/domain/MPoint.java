@@ -11,14 +11,6 @@ public class MPoint {
     public MPoint() {
     }
 
-    public MPoint(int mx) {
-        this.mx = mx;
-    }
-
-    public MPoint(float my) {
-        this.my = my;
-    }
-
     public MPoint(float mx, float my) {
         this.mx = mx;
         this.my = my;

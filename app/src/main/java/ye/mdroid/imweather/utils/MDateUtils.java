@@ -14,7 +14,7 @@ public class MDateUtils {
     /**
      * 获取当前星期的索引
      *
-     * @return
+     * @return 本日的索引
      */
     public static int getWeeksIndex() {
         SimpleDateFormat sdf = new SimpleDateFormat("EEEE");

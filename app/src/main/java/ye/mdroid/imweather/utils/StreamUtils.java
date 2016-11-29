@@ -15,7 +15,7 @@ import java.io.InputStream;
  */
 
 public class StreamUtils {
-    private static String tag = StreamUtils.class.getSimpleName();
+    private static String TAG = StreamUtils.class.getSimpleName();
 
     /**
      * 将inputstream转化为string
@@ -43,7 +43,6 @@ public class StreamUtils {
      * @throws IOException
      */
     public static void stream2File(String content, String filePath) throws IOException {
-        Log.i(tag, "下载文件路径:" + filePath);
         File file = new File(filePath);
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write(content);
