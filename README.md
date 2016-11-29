@@ -8,6 +8,7 @@
     |activity|存放activity|文件夹|
     |utils|存放工具类|文件夹|
     |domain|一些必须的javabean|文件夹|
+    |cvs|自定义控件类|文件夹|
 
 
 

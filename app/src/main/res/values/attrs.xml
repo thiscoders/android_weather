@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="mbgcolor" format="color" />
+    <attr name="mmaxcolor" format="color" />
+    <attr name="mmincolor" format="color"/>
+
+    <declare-styleable name="ChartView2">
+        <attr name="mbgcolor" />
+        <attr name="mmaxcolor" />
+        <attr name="mmincolor" />
+    </declare-styleable>
+
+</resources>
