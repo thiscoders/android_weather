@@ -28,6 +28,7 @@ public class AboutActivity extends AppCompatActivity {
     }
 
     public void upres(View view) {
+        Toast.makeText(AboutActivity.this, "八阿哥来了，走着瞧吧!", Toast.LENGTH_SHORT).show();
         //下载图标
         new Thread() {
             @Override

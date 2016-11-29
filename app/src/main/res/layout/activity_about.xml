@@ -2,25 +2,47 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFCC"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin">
 
 
-    <TextView
+    <Button
+        android:id="@+id/btn_about_dont"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="每一天都有好天气" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:onClick="upres"
-        android:text="刷新资源" />
+        android:text="别点我" />
 
     <TextView
+        android:id="@+id/tv_about_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_about_dont"
+        android:layout_centerInParent="true"
+        android:text="每一天都有好天气" />
+
+    <TextView
+        android:id="@+id/tv_about_pri"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_about_txt"
+        android:layout_centerInParent="true"
+        android:text="本程序所有数据均由和风天气提供" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_about_pri"
+        android:layout_centerInParent="true"
+        android:text="http://www.heweather.com/" />
+
+
+    <TextView
+        android:id="@+id/tv_about_gittxt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -29,10 +51,18 @@
         android:text="github地址:" />
 
     <TextView
+        android:id="@+id/tv_about_githref"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:paddingBottom="20dp"
         android:text="https://github.com/thiscoders/ImWeather" />
+
+    <ImageView
+        android:layout_width="60dp"
+        android:layout_height="100dp"
+        android:layout_above="@id/tv_about_githref"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/xjt01" />
 </RelativeLayout>

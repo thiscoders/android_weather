@@ -204,12 +204,12 @@ public class ChartView2 extends View {
                 String min = tmp.getString("min");
                 maxps = new MPoint();
                 maxps = new MPoint();
-                maxps.setMy(Integer.parseInt(max) * 20);
+                maxps.setMy(Integer.parseInt(max) * 15);
                 maxList.add(maxps);
 
                 minps = new MPoint();
                 minps = new MPoint();
-                minps.setMy(Integer.parseInt(min) * 20);
+                minps.setMy(Integer.parseInt(min) * 15);
                 minList.add(minps);
             }
             invalidate();

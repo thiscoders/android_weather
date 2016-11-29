@@ -72,7 +72,12 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_sug_trav;
     private TextView tv_sug_uv;
 
-
+    /*private TextView tv_alarm_title;
+    private TextView tv_alarm_level;
+    private TextView tv_alarm_stat;
+    private TextView tv_alarm_txt;
+    private TextView tv_alarm_type;
+*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -112,6 +117,12 @@ public class MainActivity extends AppCompatActivity {
         tv_sug_trav = (TextView) findViewById(R.id.tv_sug_trav);
         tv_sug_uv = (TextView) findViewById(R.id.tv_sug_uv);
 
+
+        /*tv_alarm_title = (TextView) findViewById(R.id.tv_alarm_title);
+        tv_alarm_level = (TextView) findViewById(R.id.tv_alarm_level);
+        tv_alarm_stat = (TextView) findViewById(R.id.tv_alarm_stat);
+        tv_alarm_txt = (TextView) findViewById(R.id.tv_alarm_txt);
+        tv_alarm_type = (TextView) findViewById(R.id.tv_alarm_type);*/
 
         downer = new AsyncDowner();
 
@@ -247,7 +258,7 @@ public class MainActivity extends AppCompatActivity {
         cv2_fc.mfunc(content);
     }
 
-
+    //解析生活指数
     public void parserSuggest() {
         final File file = new File(MainActivity.this.getExternalFilesDir("down"), "suggestion_huxian.json");
         new Thread() {
@@ -338,6 +349,49 @@ public class MainActivity extends AppCompatActivity {
             }
         }.start();
         ;
+    }
+
+    //解析灾害预警
+    public void parserAlarm() {
+        final File file = new File(MainActivity.this.getExternalFilesDir("down"), "alarm_huxian.json");
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+
+
+                    String content = StreamUtils.file2String(file);
+                    if (content == null || content.equals("")) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(MainActivity.this, "资源未下载,请点击刷新数据!", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        return;
+                    }
+                    JSONObject object = new JSONObject(content);
+                    JSONArray weath = object.getJSONArray("HeWeather5");
+                    JSONObject fath = (JSONObject) weath.get(0);
+
+                    final String status = fath.getString("status");
+                    if (!status.equals("ok")) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(MainActivity.this, "获取生活指数失败！" + status, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        return;
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }.start();
     }
 
     //设置图片
