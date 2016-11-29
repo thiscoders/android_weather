@@ -9,6 +9,7 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ye.mdroid.imweather.R;
+import ye.mdroid.imweather.activity.MainActivity;
 import ye.mdroid.imweather.domain.MPoint;
 import ye.mdroid.imweather.utils.MDateUtils;
 
@@ -118,12 +120,12 @@ public class ChartView2 extends View {
             canvas.drawLine(start, (float) 300 - maxList.get(i).getMy(), end, (float) 300 - maxList.get(i + 1).getMy(), maxpaint);
             canvas.drawCircle(start, (float) 300 - maxList.get(i).getMy(), 3, tpaint);
             canvas.drawText((maxList.get(i).getMy() / 20) + "℃", start - 20, (float) 300 - maxList.get(i).getMy() - 5, tpaint);
-            canvas.drawLine(start, 350, start, (float) 300 - maxList.get(i).getMy(), tpaint);//画竖直线
+            canvas.drawLine(start, 360, start, (float) 300 - maxList.get(i).getMy(), tpaint);//画竖直线
             start = end;
         }
         canvas.drawCircle(start, (float) 300 - maxList.get(6).getMy(), 3, tpaint);
         canvas.drawText((maxList.get(6).getMy() / 20) + "℃", start - 10, (float) 300 - maxList.get(6).getMy() - 5, tpaint);
-        canvas.drawLine(start, 350, start, (float) 300 - maxList.get(6).getMy(), tpaint);//画竖直线
+        canvas.drawLine(start, 360, start, (float) 300 - maxList.get(6).getMy(), tpaint);//画竖直线
 
         //画最小温度曲线
         start = 111; //start归位
@@ -143,15 +145,15 @@ public class ChartView2 extends View {
         int windex = MDateUtils.getWeeksIndex();
         for (int i = windex; i < 7; i++) {
             if (i == windex) {
-                canvas.drawText("今天", start - 10, 380, tpaint);
+                canvas.drawText("今天", start - 18, 380, tpaint);
                 start += loop;
                 continue;
             }
-            canvas.drawText(cweeks[i], start - 10, 380, tpaint);
+            canvas.drawText(cweeks[i], start - 18, 380, tpaint);
             start += loop;
         }
         for (int i = 0; i < windex; i++) {
-            canvas.drawText(cweeks[i], start - 10, 380, tpaint);
+            canvas.drawText(cweeks[i], start - 18, 380, tpaint);
             start += loop;
         }
 

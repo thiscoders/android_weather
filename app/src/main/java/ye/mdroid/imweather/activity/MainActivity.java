@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private final int MENU_PARSER = 2;
     private final int MENU_ABOUT = 3;
     private ProgressBar pb_ing;
-    private ChartView2 cv2_fc;
+    private AsyncDowner downer;
 
     private ImageView iv_now_cond_code;
     private TextView tv_now_citys;
@@ -52,8 +52,26 @@ public class MainActivity extends AppCompatActivity {
     private TextView tv_now_cond_txt;
     private TextView tv_now_pres;
 
+    private ChartView2 cv2_fc;
 
-    private AsyncDowner downer;
+    private TextView tv_sug_air_lev;
+    private TextView tv_sug_comf_lev;
+    private TextView tv_sug_cw_lev;
+    private TextView tv_sug_drsg_lev;
+    private TextView tv_sug_flu_lev;
+    private TextView tv_sug_sport_lev;
+    private TextView tv_sug_trav_lev;
+    private TextView tv_sug_uv_lev;
+
+    private TextView tv_sug_air;
+    private TextView tv_sug_comf;
+    private TextView tv_sug_cw;
+    private TextView tv_sug_drsg;
+    private TextView tv_sug_flu;
+    private TextView tv_sug_sport;
+    private TextView tv_sug_trav;
+    private TextView tv_sug_uv;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,12 +93,38 @@ public class MainActivity extends AppCompatActivity {
         tv_now_pres = (TextView) findViewById(R.id.tv_now_pres); //气压
         cv2_fc = (ChartView2) findViewById(R.id.cv2_fc);
 
+
+        tv_sug_air_lev = (TextView) findViewById(R.id.tv_sug_air_lev);
+        tv_sug_comf_lev = (TextView) findViewById(R.id.tv_sug_comf_lev);
+        tv_sug_cw_lev = (TextView) findViewById(R.id.tv_sug_cw_lev);
+        tv_sug_drsg_lev = (TextView) findViewById(R.id.tv_sug_drsg_lev);
+        tv_sug_flu_lev = (TextView) findViewById(R.id.tv_sug_flu_lev);
+        tv_sug_sport_lev = (TextView) findViewById(R.id.tv_sug_sport_lev);
+        tv_sug_trav_lev = (TextView) findViewById(R.id.tv_sug_trav_lev);
+        tv_sug_uv_lev = (TextView) findViewById(R.id.tv_sug_uv_lev);
+
+        tv_sug_air = (TextView) findViewById(R.id.tv_sug_air);
+        tv_sug_comf = (TextView) findViewById(R.id.tv_sug_comf);
+        tv_sug_cw = (TextView) findViewById(R.id.tv_sug_cw);
+        tv_sug_drsg = (TextView) findViewById(R.id.tv_sug_drsg);
+        tv_sug_flu = (TextView) findViewById(R.id.tv_sug_flu);
+        tv_sug_sport = (TextView) findViewById(R.id.tv_sug_sport);
+        tv_sug_trav = (TextView) findViewById(R.id.tv_sug_trav);
+        tv_sug_uv = (TextView) findViewById(R.id.tv_sug_uv);
+
+
         downer = new AsyncDowner();
 
-        parserNow();
-        parserForecast();
+        downImages();
+
+        parserIt();
     }
 
+    private void parserIt() {
+        parserNow();
+        parserForecast();
+        parserSuggest();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -104,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
             case MENU_PARSER:
                 parserNow();
                 parserForecast();
+                parserSuggest();
                 break;
             case MENU_ABOUT:
                 intent = new Intent(MainActivity.this, AboutActivity.class);
@@ -125,10 +170,14 @@ public class MainActivity extends AppCompatActivity {
 
                     JSONArray nowf = object.getJSONArray("HeWeather5");
                     JSONObject now = (JSONObject) nowf.get(0);
-                    String status = now.getString("status");
-                    Log.i(TAG, "status..." + status);
+                    final String status = now.getString("status");
                     if (!status.equals("ok")) {
-                        Log.e(TAG, "实况天气数据获取失败！");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(MainActivity.this, "获取实况天气失败！" + status, Toast.LENGTH_SHORT).show();
+                            }
+                        });
                         return;
                     }
 
@@ -157,17 +206,17 @@ public class MainActivity extends AppCompatActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            tv_now_citys.setText(city);
-                            tv_now_fl.setText(fl);
+                            tv_now_citys.setText("\t" + city);
+                            tv_now_loc.setText(loc);
+                            tv_now_fl.setText("(" + fl + ")");
                             tv_now_hum.setText(hum);
                             tv_now_pcpn.setText(pcpn);
                             tv_now_pres.setText(pres);
                             tv_now_vis.setText(vis);
                             tv_now_cond_txt.setText(txt);
-                            tv_now_winddict.setText(dir);
+                            tv_now_winddict.setText("\t" + dir);
                             tv_now_windlev.setText(sc);
                             tv_now_windspe.setText(spd);
-                            tv_now_loc.setText(loc);
                             Bitmap srcBitmap = BitmapFactory.decodeFile(MainActivity.this.getExternalFilesDir("images") + "/w" + code + ".png");
                             handleNowCond(srcBitmap);
 
@@ -191,11 +240,109 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        if (content == null || content.equals("")) {
+            Toast.makeText(MainActivity.this, "资源未下载,请点击刷新数据!", Toast.LENGTH_LONG).show();
+            return;
+        }
         cv2_fc.mfunc(content);
     }
 
+
+    public void parserSuggest() {
+        final File file = new File(MainActivity.this.getExternalFilesDir("down"), "suggestion_huxian.json");
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    String content = StreamUtils.file2String(file);
+                    if (content == null || content.equals("")) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(MainActivity.this, "资源未下载,请点击刷新数据!", Toast.LENGTH_LONG).show();
+                            }
+                        });
+                        return;
+                    }
+                    JSONObject object = new JSONObject(content);
+                    JSONArray weath = object.getJSONArray("HeWeather5");
+                    JSONObject fath = (JSONObject) weath.get(0);
+
+                    final String status = fath.getString("status");
+                    if (!status.equals("ok")) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(MainActivity.this, "获取生活指数失败！" + status, Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        return;
+                    }
+
+                    JSONObject sugg = fath.getJSONObject("suggestion");
+
+                    JSONObject air = sugg.getJSONObject("air");
+                    final String airbrf = air.getString("brf");
+                    final String airtxt = air.getString("txt");
+                    JSONObject comf = sugg.getJSONObject("comf");
+                    final String comfbrf = comf.getString("brf");
+                    final String comftxt = comf.getString("txt");
+                    JSONObject cw = sugg.getJSONObject("cw");
+                    final String cwbrf = cw.getString("brf");
+                    final String cwtxt = cw.getString("txt");
+                    JSONObject drsg = sugg.getJSONObject("drsg");
+                    final String drsgbrf = drsg.getString("brf");
+                    final String drsgtxt = drsg.getString("txt");
+                    JSONObject flu = sugg.getJSONObject("flu");
+                    final String flubrf = flu.getString("brf");
+                    final String flutxt = flu.getString("txt");
+                    JSONObject sport = sugg.getJSONObject("sport");
+                    final String sportbrf = sport.getString("brf");
+                    final String sporttxt = sport.getString("txt");
+                    JSONObject trav = sugg.getJSONObject("trav");
+                    final String travbrf = trav.getString("brf");
+                    final String travtxt = trav.getString("txt");
+                    JSONObject uv = sugg.getJSONObject("uv");
+                    final String uvbrf = uv.getString("brf");
+                    final String uvtxt = uv.getString("txt");
+
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+
+                            tv_sug_air_lev.setText("※空气指数(" + airbrf + "):");
+                            tv_sug_air.setText("\t\t" + airtxt);
+                            tv_sug_comf_lev.setText("※舒适度指数(" + comfbrf + "):");
+                            tv_sug_comf.setText("\t\t" + comftxt);
+                            tv_sug_cw_lev.setText("※洗车指数(" + cwbrf + "):");
+                            tv_sug_cw.setText("\t\t" + cwtxt);
+                            tv_sug_drsg_lev.setText("※穿衣指数(" + drsgbrf + "):");
+                            tv_sug_drsg.setText("\t\t" + drsgtxt);
+                            tv_sug_flu_lev.setText("※感冒指数(" + flubrf + "):");
+                            tv_sug_flu.setText("\t\t" + flutxt);
+                            tv_sug_sport_lev.setText("※运动指数(" + sportbrf + "):");
+                            tv_sug_sport.setText("\t\t" + sporttxt);
+                            tv_sug_trav_lev.setText("※旅游指数(" + travbrf + "):");
+                            tv_sug_trav.setText("\t\t" + travtxt);
+                            tv_sug_uv_lev.setText("※紫外线指数(" + uvbrf + "):");
+                            tv_sug_uv.setText("\t\t" + uvtxt);
+                        }
+                    });
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+        ;
+    }
+
+    //设置图片
     private void handleNowCond(Bitmap srcBitmap) {
-        Bitmap copyBitmap = Bitmap.createBitmap(srcBitmap.getWidth(), srcBitmap.getHeight(), srcBitmap.getConfig());
+       /* Bitmap copyBitmap = Bitmap.createBitmap(srcBitmap.getWidth(), srcBitmap.getHeight(), srcBitmap.getConfig());
 
         Canvas canvas = new Canvas(copyBitmap);
 
@@ -205,11 +352,28 @@ public class MainActivity extends AppCompatActivity {
 
         matrix.setScale(1.1f, 1.1f);
 
-        canvas.drawBitmap(srcBitmap, matrix, paint);
+        canvas.drawBitmap(srcBitmap, matrix, paint);*/
 
         iv_now_cond_code.setImageBitmap(srcBitmap);
     }
 
+    //判断图片是否下载到本地，如果未下载就开始下载
+    private void downImages() {
+        File file = new File(MainActivity.this.getExternalFilesDir("images") + "w999.png");
+        if (file.exists()) {
+            return;
+        }
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    new DownAgent(MainActivity.this, new Downloader()).test10();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
+    }
 
     private class AsyncDowner extends AsyncTask<Void, Void, Void> {
         private boolean isok = false;
@@ -250,8 +414,10 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             pb_ing.setVisibility(View.GONE);
-            if (isok)
+            if (isok) {
                 Toast.makeText(MainActivity.this, "所有资源下载完成！", Toast.LENGTH_SHORT).show();
+                parserIt();
+            }
         }
     }
 
