@@ -5,6 +5,8 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -42,7 +44,7 @@ public class StreamUtils {
      * @param filePath 文件路径
      * @throws IOException
      */
-    public static void stream2File(String content, String filePath) throws IOException {
+    public static void string2File(String content, String filePath) throws IOException {
         File file = new File(filePath);
         BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write(content);
@@ -50,6 +52,17 @@ public class StreamUtils {
         writer.close();
     }
 
+
+    public static void stream2File(InputStream inputStream, String imageDownPath) throws IOException {
+        FileOutputStream outputStream = new FileOutputStream(new File(imageDownPath));
+        int len;
+        byte[] bytes = new byte[1024 * 1024];
+        while ((len = inputStream.read(bytes)) != -1) {
+            outputStream.write(bytes, 0, len);
+        }
+        inputStream.close();
+        outputStream.close();
+    }
 
     /**
      * 将文件内容转化成字符串返回

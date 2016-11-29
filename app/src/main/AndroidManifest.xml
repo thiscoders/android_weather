@@ -2,6 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ye.mdroid.imweather">
 
+    <!--获取访问网络的权限-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--读取当前网络状态-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- GPS定位权限 -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@drawable/sunny"
@@ -27,8 +35,5 @@
         <!--app信息界面-->
         <activity android:name=".activity.AboutActivity" />
     </application>
-    <!--获取访问网络的权限-->
-    <uses-permission android:name="android.permission.INTERNET" />
-    <!--读取当前网络状态-->
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
 </manifest>

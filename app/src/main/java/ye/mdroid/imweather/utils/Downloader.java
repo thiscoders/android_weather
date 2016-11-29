@@ -57,7 +57,7 @@ public class Downloader {
         if (res == 200) {
             InputStream in = connection.getInputStream();
             codes = StreamUtils.stream2String(in);
-            StreamUtils.stream2File(codes, filePath);
+            StreamUtils.string2File(codes, filePath);
         }
         synchronized (MainActivity.class) {
             flag--;

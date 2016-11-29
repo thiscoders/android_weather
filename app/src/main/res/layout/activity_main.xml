@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -11,18 +10,173 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ye.mdroid.imweather.activity.MainActivity">
 
-
-    <TextView
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="朱二甲醚"/>
+        android:layout_height="match_parent">
 
-    <ProgressBar
-        android:id="@+id/pb_ing"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_now"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="实况天气" />
+
+            <LinearLayout
+                android:id="@+id/ll_new"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_below="@id/tv_now"
+                android:background="#55ff99"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_now_citys"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="户县"
+                            android:textSize="30sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tv_now_fl"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/tv_now_citys"
+                            android:layout_toRightOf="@id/tv_now_citys"
+                            android:text="18℃"
+                            android:textSize="24sp" />
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@id/tv_now_citys"
+                            android:paddingLeft="200dp">
+
+                            <TextView
+                                android:id="@+id/tv_now_cond_txt"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="阴/" />
+
+                            <ImageView
+                                android:id="@+id/iv_now_cond_code"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:layout_toRightOf="@id/tv_now_cond_txt"
+                                android:src="@drawable/w101" />
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/tv_now_loc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="更新时间:10:10" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_now_hum"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="湿度:31%\t" />
+
+                        <TextView
+                            android:id="@+id/tv_now_pcpn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="降水量:21mm\t" />
 
 
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_now_pres"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="气压:1025\t" />
+
+                        <TextView
+                            android:id="@+id/tv_now_vis"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="能见度:10\t" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="风力描述:" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="\t\t" />
+
+                        <TextView
+                            android:id="@+id/tv_now_winddict"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="风向:东北风\t\t" />
+
+                        <TextView
+                            android:id="@+id/tv_now_windspe"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="风速:24\t\t" />
+
+                        <TextView
+                            android:id="@+id/tv_now_windlev"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="等级:4-5" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_hourly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_new"
+                android:text="每小时预报" />
+
+            
+            <ProgressBar
+                android:id="@+id/pb_ing"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+    </ScrollView>
 </RelativeLayout>

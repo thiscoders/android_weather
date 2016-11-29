@@ -3,6 +3,10 @@ package ye.mdroid.imweather.utils;
 import android.content.Context;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * Created by ye on 16-11-29.
@@ -17,12 +21,14 @@ public class DownAgent {
     private Downloader downloader;
 
     private String downPath;
+    private String imagePath;
 
 
     public DownAgent(Context context, Downloader downloader) {
         this.context = context;
         this.downloader = downloader;
         downPath = this.context.getExternalFilesDir("down") + "";
+        imagePath = this.context.getExternalFilesDir("images") + "/";
     }
 
     //下载7-10天预报
@@ -114,6 +120,54 @@ public class DownAgent {
         downloader.download("城市查询", urls, downPath + "/search_huxian.json");
     }
 
+    //下载图片
+    public void test10() throws IOException {
+        URL url = null;
+        for (int i = 100; i < 105; i++) {
+            url = new URL("http://files.heweather.com/cond_icon/" + i + ".png");
+            downexec(url, imagePath + "w" + i + ".png");
+        }
+        for (int i = 200; i < 214; i++) {
+            url = new URL("http://files.heweather.com/cond_icon/" + i + ".png");
+            downexec(url, imagePath + "w" + i + ".png");
+        }
+
+        for (int i = 300; i < 315; i++) {
+            url = new URL("http://files.heweather.com/cond_icon/" + i + ".png");
+            downexec(url, imagePath + "w" + i + ".png");
+        }
+
+        for (int i = 400; i < 408; i++) {
+            url = new URL("http://files.heweather.com/cond_icon/" + i + ".png");
+            downexec(url, imagePath + "w" + i + ".png");
+        }
+
+        for (int i = 500; i < 509; i++) {
+            url = new URL("http://files.heweather.com/cond_icon/" + i + ".png");
+            downexec(url, imagePath + "w" + i + ".png");
+        }
+
+        for (int i = 900; i < 902; i++) {
+            url = new URL("http://files.heweather.com/cond_icon/" + i + ".png");
+            downexec(url, imagePath + "w" + i + ".png");
+        }
+
+        int i = 999;
+        url = new URL("http://files.heweather.com/cond_icon/" + i + ".png");
+        downexec(url, imagePath + "w" + i + ".png");
+    }
+
+    public void downexec(URL url, String imageDownPath) throws IOException {
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+        conn.setRequestMethod("GET");
+        conn.setConnectTimeout(5000);
+
+        if (conn.getResponseCode() == 200) {
+            InputStream inputStream = conn.getInputStream();
+            StreamUtils.stream2File(inputStream, imageDownPath);
+        }
+    }
 
     public void exec(int i) throws IOException {
         switch (i) {
@@ -143,6 +197,9 @@ public class DownAgent {
                 break;
             case 9:
                 test09();
+                break;
+            case 10:
+                test10();
                 break;
         }
     }
