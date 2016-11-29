@@ -4,17 +4,31 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/sunny"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <!--欢迎界面,目前尚未启用-->
+        <activity
+            android:name=".activity.SplashActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        </activity>
+
+        <!--主界面-->
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--选择城市页面-->
+        <activity android:name=".activity.CitysActivity" />
+        <!--app信息界面-->
+        <activity android:name=".activity.AboutActivity" />
     </application>
-
+    <!--获取访问网络的权限-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--读取当前网络状态-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 </manifest>
