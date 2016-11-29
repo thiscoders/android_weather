@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -16,7 +17,8 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="#FFFFCC">
 
             <TextView
                 android:id="@+id/tv_now"
@@ -29,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="120dp"
                 android:layout_below="@id/tv_now"
-                android:background="#55ff99"
+                android:background="#CCFFFF"
                 android:orientation="horizontal">
 
                 <LinearLayout
@@ -76,7 +78,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_centerInParent="true"
                                 android:layout_toRightOf="@id/tv_now_cond_txt"
-                                android:src="@drawable/w101" />
+                                android:src="@drawable/w200" />
                         </RelativeLayout>
                     </RelativeLayout>
 
@@ -163,13 +165,73 @@
             </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_hourly"
+                android:id="@+id/tv_forecast"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ll_new"
-                android:text="每小时预报" />
+                android:text="7-10天预报" />
 
-            
+            <ye.mdroid.imweather.cvs.ChartView2
+                android:id="@+id/cv2_fc"
+                android:layout_width="match_parent"
+                android:layout_height="130dp"
+                android:layout_below="@id/tv_forecast"
+                app:mbgcolor="#FFCCCC"
+                app:mmaxcolor="#FFFF66"
+                app:mmincolor="#99CC66" />
+
+            <TextView
+                android:id="@+id/tv_suggestion"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cv2_fc"
+                android:text="生活指数" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_suggestion"
+                android:background="#CCFF99"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="简介" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="洗车指数" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="穿衣指数" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="感冒指数" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="运动指数" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="旅游指数" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="紫外线指数" />
+
+
+            </LinearLayout>
+
             <ProgressBar
                 android:id="@+id/pb_ing"
                 android:layout_width="wrap_content"

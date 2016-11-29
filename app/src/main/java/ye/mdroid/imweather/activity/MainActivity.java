@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     private final int MENU_PARSER = 2;
     private final int MENU_ABOUT = 3;
     private ProgressBar pb_ing;
-    private ChartView2 cv2_forecast;
+    private ChartView2 cv2_fc;
 
     private ImageView iv_now_cond_code;
     private TextView tv_now_citys;
@@ -73,10 +73,12 @@ public class MainActivity extends AppCompatActivity {
         tv_now_windspe = (TextView) findViewById(R.id.tv_now_windspe); //等级
         tv_now_cond_txt = (TextView) findViewById(R.id.tv_now_cond_txt); //天气状况描述
         tv_now_pres = (TextView) findViewById(R.id.tv_now_pres); //气压
+        cv2_fc = (ChartView2) findViewById(R.id.cv2_fc);
 
         downer = new AsyncDowner();
 
         parserNow();
+        parserForecast();
     }
 
 
@@ -101,6 +103,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case MENU_PARSER:
                 parserNow();
+                parserForecast();
                 break;
             case MENU_ABOUT:
                 intent = new Intent(MainActivity.this, AboutActivity.class);
@@ -179,6 +182,17 @@ public class MainActivity extends AppCompatActivity {
         }.start();
     }
 
+    //解析7-10天预报
+    public void parserForecast() {
+        File file = new File(this.getExternalFilesDir("down"), "forecast_huxian.json");
+        String content = null;
+        try {
+            content = StreamUtils.file2String(file);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        cv2_fc.mfunc(content);
+    }
 
     private void handleNowCond(Bitmap srcBitmap) {
         Bitmap copyBitmap = Bitmap.createBitmap(srcBitmap.getWidth(), srcBitmap.getHeight(), srcBitmap.getConfig());

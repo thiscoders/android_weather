@@ -36,6 +36,7 @@ public class ChartView2 extends View {
     private Paint maxpaint;
     private Paint minpaint;
     private Paint tpaint;
+    private Paint ppaint;
 
     private List<MPoint> maxList;
     private List<MPoint> minList;
@@ -92,6 +93,9 @@ public class ChartView2 extends View {
         tpaint.setColor(Color.BLUE);
         tpaint.setTextSize(20);
 
+        ppaint = new Paint();
+        ppaint.setTextSize(20);
+
         maxList = new ArrayList<MPoint>();
         minList = new ArrayList<MPoint>();
     }
@@ -114,12 +118,12 @@ public class ChartView2 extends View {
             canvas.drawLine(start, (float) 300 - maxList.get(i).getMy(), end, (float) 300 - maxList.get(i + 1).getMy(), maxpaint);
             canvas.drawCircle(start, (float) 300 - maxList.get(i).getMy(), 3, tpaint);
             canvas.drawText((maxList.get(i).getMy() / 20) + "℃", start - 20, (float) 300 - maxList.get(i).getMy() - 5, tpaint);
-            canvas.drawLine(start, 420, start, (float) 300 - maxList.get(i).getMy(), tpaint);//画竖直线
+            canvas.drawLine(start, 350, start, (float) 300 - maxList.get(i).getMy(), tpaint);//画竖直线
             start = end;
         }
         canvas.drawCircle(start, (float) 300 - maxList.get(6).getMy(), 3, tpaint);
         canvas.drawText((maxList.get(6).getMy() / 20) + "℃", start - 10, (float) 300 - maxList.get(6).getMy() - 5, tpaint);
-        canvas.drawLine(start, 420, start, (float) 300 - maxList.get(6).getMy(), tpaint);//画竖直线
+        canvas.drawLine(start, 350, start, (float) 300 - maxList.get(6).getMy(), tpaint);//画竖直线
 
         //画最小温度曲线
         start = 111; //start归位
@@ -138,14 +142,32 @@ public class ChartView2 extends View {
         start = 108; //start归位
         int windex = MDateUtils.getWeeksIndex();
         for (int i = windex; i < 7; i++) {
-            canvas.drawText(cweeks[i], start - 10, 430, tpaint);
+            if (i == windex) {
+                canvas.drawText("今天", start - 10, 380, tpaint);
+                start += loop;
+                continue;
+            }
+            canvas.drawText(cweeks[i], start - 10, 380, tpaint);
             start += loop;
         }
-        int cs = 6 - windex;
-        for (int i = cs; i < windex; i++) {
-            canvas.drawText(cweeks[i], start - 10, 430, tpaint);
+        for (int i = 0; i < windex; i++) {
+            canvas.drawText(cweeks[i], start - 10, 380, tpaint);
             start += loop;
         }
+
+        ppaint.setStrokeWidth(5);
+        ppaint.setColor(mmaxcolor);
+        canvas.drawLine(20, 20, 130, 20, ppaint);
+        canvas.drawText("max", 138, 26, ppaint);
+        ppaint.setColor(mmincolor);
+        canvas.drawLine(20, 50, 130, 50, ppaint);
+        canvas.drawText("min", 138, 56, ppaint);
+        ppaint.setColor(Color.BLACK);
+        canvas.drawPoint(20, 20, ppaint);
+        canvas.drawPoint(130, 20, ppaint);
+        canvas.drawPoint(20, 50, ppaint);
+        canvas.drawPoint(130, 50, ppaint);
+
     }
 
     public void mfunc(String jsonContent) {
