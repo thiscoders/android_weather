@@ -14,15 +14,16 @@ import ye.mdroid.imweather.activity.MainActivity;
  */
 
 public class Downloader {
-    private static String tag = Downloader.class.getSimpleName();
-    private static int flag = 9;
+    private String tag = Downloader.class.getSimpleName();
+    private int flag = 9;
 
     /**
      * 打印源码
+     *
      * @param urls
      * @throws IOException
      */
-    public static void printf(String urls) throws IOException {
+    public void printf(String urls) throws IOException {
         URL url = new URL(urls);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET"); //请求方式 get
@@ -45,7 +46,7 @@ public class Downloader {
      * @param filePath 下载路径
      * @throws IOException
      */
-    public static void download(String title, String urls, String filePath) throws IOException {
+    public void download(String title, String urls, String filePath) throws IOException {
         URL url = new URL(urls);
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET"); //请求方式 get

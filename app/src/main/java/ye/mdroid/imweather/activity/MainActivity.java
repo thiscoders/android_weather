@@ -16,6 +16,7 @@ import java.io.IOException;
 import ye.mdroid.imweather.R;
 import ye.mdroid.imweather.cvs.ChartView2;
 import ye.mdroid.imweather.utils.DownAgent;
+import ye.mdroid.imweather.utils.Downloader;
 import ye.mdroid.imweather.utils.StreamUtils;
 
 public class MainActivity extends AppCompatActivity {
@@ -66,21 +67,23 @@ public class MainActivity extends AppCompatActivity {
 
     private class AsyncDowner extends AsyncTask<Void, Void, Void> {
         private boolean isok = false;
+        private Downloader downloader;
         private DownAgent agent;
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
+            downloader = new Downloader();
             pb_ing.setVisibility(View.VISIBLE);
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            agent = new DownAgent(MainActivity.this);
+            agent = new DownAgent(MainActivity.this, downloader);
             try {
                 for (int i = 1; i < 10; i++) {
                     if (isCancelled()) {
-                        break;
+                        return null;
                     }
                     agent.exec(i);
                 }

@@ -14,12 +14,14 @@ public class DownAgent {
     private String keys = "c832c5f36ea8477bbdcf79d41371065c";
 
     private Context context;
+    private Downloader downloader;
 
     private String downPath;
 
 
-    public DownAgent(Context context) {
+    public DownAgent(Context context, Downloader downloader) {
         this.context = context;
+        this.downloader = downloader;
         downPath = this.context.getExternalFilesDir("down") + "";
     }
 
@@ -30,7 +32,7 @@ public class DownAgent {
         urls += "city=huxian";
         urls += "&key=" + keys;
         urls += "&lang=zh_cn";
-        Downloader.download("7-10", urls, downPath + "/forecast_huxian.json");
+        downloader.download("7-10", urls, downPath + "/forecast_huxian.json");
     }
 
 
@@ -41,7 +43,7 @@ public class DownAgent {
         urls += "city=huxian";
         urls += "&key=" + keys;
         urls += "&lang=zh_cn";
-        Downloader.download("实况天气", urls, downPath + "/now_huxian.json");
+        downloader.download("实况天气", urls, downPath + "/now_huxian.json");
     }
 
     //3.下载每小时预报 /hourly     city key lang
@@ -51,7 +53,7 @@ public class DownAgent {
         urls += "city=huxian";
         urls += "&key=" + keys;
         urls += "&lang=zh_cn";
-        Downloader.download("每小时预报", urls, downPath + "/hourly_huxian.json");
+        downloader.download("每小时预报", urls, downPath + "/hourly_huxian.json");
     }
 
     //4.下载生活指数 /suggestion      city key
@@ -60,7 +62,7 @@ public class DownAgent {
         urls += "suggestion?";
         urls += "city=huxian";
         urls += "&key=" + keys;
-        Downloader.download("生活指数", urls, downPath + "/suggestion_huxian.json");
+        downloader.download("生活指数", urls, downPath + "/suggestion_huxian.json");
     }
 
     //5.下载灾害预警 /alarm      city key
@@ -69,7 +71,7 @@ public class DownAgent {
         urls += "alarm?";
         urls += "city=huxian";
         urls += "&key=" + keys;
-        Downloader.download("灾害预警", urls, downPath + "/alarm_huxian.json");
+        downloader.download("灾害预警", urls, downPath + "/alarm_huxian.json");
     }
 
     //6.下载天气预报集合接口 /weather     city key lang
@@ -79,7 +81,7 @@ public class DownAgent {
         urls += "city=huxian";
         urls += "&key=" + keys;
         urls += "&lang=zh_cn";
-        Downloader.download("集合接口", urls, downPath + "/weather_huxian.json");
+        downloader.download("集合接口", urls, downPath + "/weather_huxian.json");
     }
 
     //7.下载景点天气 /scenic      city key lang
@@ -89,7 +91,7 @@ public class DownAgent {
         urls += "city=CN101110106"; //仅支持id
         urls += "&key=" + keys;
         urls += "&lang=zh_cn";
-        Downloader.download("景点天气", urls, downPath + "/scenic_huxian.json");
+        downloader.download("景点天气", urls, downPath + "/scenic_huxian.json");
     }
 
     //8.下载历史天气 /historical        city date   key   lang
@@ -100,7 +102,7 @@ public class DownAgent {
         urls += "&date=2016-10-28";
         urls += "&key=" + keys;
         urls += "&lang=zh_cn";
-        Downloader.download("历史天气16-10-28", urls, downPath + "/historical_huxian.json");
+        downloader.download("历史天气16-10-28", urls, downPath + "/historical_huxian.json");
     }
 
     //9.下载城市查询 /search      city key
@@ -109,7 +111,7 @@ public class DownAgent {
         urls += "search?";
         urls += "city=huxian";
         urls += "&key=" + keys;
-        Downloader.download("城市查询", urls, downPath + "/search_huxian.json");
+        downloader.download("城市查询", urls, downPath + "/search_huxian.json");
     }
 
 
